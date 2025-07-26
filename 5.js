@@ -5,7 +5,8 @@ function get(obj, path) {
   const way = path.split(".");
   let current = obj;
   for (let i = 0; i < way.length; i++) {
-    if (current[way[i]] === undefined) return undefined;
+    if (current[way[i]] === undefined || current[way[i]] === null)
+      return undefined;
     current = current[way[i]];
   }
   return current;
@@ -13,9 +14,18 @@ function get(obj, path) {
 const obj = {
   a: {
     b: {
+      c: null,
+    },
+  },
+};
+
+const obj2 = {
+  a: {
+    b: {
       c: "d",
     },
   },
 };
 
-console.log(get(obj, "a.b.c")); // d
+console.log(get(obj, "a.b.c.d")); // undefined
+console.log(get(obj2, "a.b.c")); // d
